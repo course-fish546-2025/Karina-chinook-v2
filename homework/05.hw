@@ -1,0 +1,19 @@
+---
+title: "05.hw"
+output: html_document
+date: "2025-04-29"
+---
+
+What are SAM/BAM files? What is the difference between to the two?
+SAM files are sequence alignment map and BAM files are binary alignment map, they are different formats for alignment data. BAm files are compressed, non-human readable and can be used for faster computational processing and can be indexed.
+
+samtoolsis a popular program for working with alignment data. What are three common tasks that this software is used for?
+convert between formats
+sorting and indexing bam files
+extracting reads by region
+Why might you want to visualize alignment data and what are two program that can be used for this?
+so you can QC your data, visuallly look at vairants, and inspect expression. 
+
+Describe what VCF file is?
+A VCF file has intermediate variant and genotype data for a region or entire genome. 
+The file has a metadata header, a header line, and data lines. 

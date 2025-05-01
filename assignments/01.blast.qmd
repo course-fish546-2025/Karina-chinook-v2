@@ -1,0 +1,64 @@
+---
+title: "01.blast"
+format: html
+editor: visual
+---
+
+I am going to download blast and use it to compare it to unkown sequences.
+
+```{bash}
+cd /home/jovyan/applications
+curl -O https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-linux.tar.gz
+tar -xf ncbi-blast-2.16.0+-x64-linux.tar.gz
+```
+
+```{bash}
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx -h
+
+```
+
+# make blast database
+
+I am using swsis-prot uni=prot
+
+```{bash}
+cd ..
+cd applications
+cd blastdb
+curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2025_01.fasta.gz
+
+gunzip -k uniprot_sprot_r2025_01.fasta.gz
+
+```
+
+```{bash}
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/makeblastdb -in blastdb/uniprot_sprot_r2025_01.fasta -dbtype prot -out blastdb/uniprot_sprot_r2025_01
+
+curl https://eagle.fish.washington.edu/cnidarian/Ab_4denovo_CLC6_a.fa -k > ~/applications/Ab_4denovo_CLC6_a.fa
+
+```
+
+```{bash}
+head ~/applications/Ab_4denovo_CLC6_a.fa
+echo "How many sequences are there?"
+grep -c ">" ~/applications/Ab_4denovo_CLC6_a.fa
+```
+
+```{bash}
+mkdir -p /home/jovyan/applications/output
+```
+
+```{bash}
+/home/jovyan/applications/ncbi-blast-2.16.0+/bin/blastx \
+-query /home/jovyan/applications/Ab_4denovo_CLC6_a.fa \
+-db /home/jovyan/applications/blastdb/uniprot_sprot_r2025_01 \
+-out /home/jovyan/applications/output/Ab_4-uniprot_blastx.tab \
+-evalue 1E-20 \
+-num_threads 1 \
+-max_target_seqs 1 \
+-outfmt 6
+head -2 ../output/Ab_4-uniprot_blastx.tab
+wc -l ../output/Ab_4-uniprot_blastx.tab
+```

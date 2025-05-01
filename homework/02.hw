@@ -1,0 +1,35 @@
+---
+title: "02.hw"
+format: html
+editor: visual
+---
+
+## 
+
+## Week 02 Question Set
+
+a)  **What do you feel was the most impressive thing you did in class last week was?**
+
+    Learning to create the blast database.
+
+b)  **What is your weekly goal for making progress on your project? What is the next step?**
+
+    I want to make a plan this week for that project and then create a weekly goal. I think if I am comparing data from inside/outside an aquaculutre site I need to find the data set first.
+
+c)  **There were two readings this week not from the textbook, meant for two different audiences. Which reading did you get the most out of and why? Do you have any questions regarding the Journal of Shellfish Research paper?**
+
+    I got the most out of the Journal of Shellfish paper, this was a really helpful overview of how bioinformatics can be used to in a study. I learned a lot from this paper.
+
+d)  **What is your favorite thing about markdown and why?**
+
+    I like that markdown can be used as a tool to track what you did and why. It seems useful for organization.
+
+e)  \*\*What is the differnce between `curl` and `wget`? When would you used one over the other?
+
+curl is used for transferring data to or from a server.
+
+you would use curl when you are using a variety of protocols or automatic tasks.
+
+Wget is for downloading files.
+
+You would use wget when you are just downloading websites or files.

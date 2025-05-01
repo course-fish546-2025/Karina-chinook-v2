@@ -1,0 +1,31 @@
+---
+title: "03.kntir"
+output: html_document
+date: "2025-04-17"
+output: 
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+R code chunks: Insert R code and its output in your report using R code chunks.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+```{r example-plot}
+library(ggplot2)
+data(mtcars)
+ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + theme_minimal()
+
+```
+
+```
+
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+

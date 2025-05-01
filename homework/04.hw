@@ -1,0 +1,15 @@
+---
+title: "04.hw"
+output: html_document
+date: "2025-04-22"
+---
+What is tmux and how does this relate to our current way of working on raven?
+ tmux is a tool that allows you to work in multiple terminal sessions from a single window. This relates to our current way of working on raven because we are remotely working in a machine and can conduct long running jobs. 
+
+What is ssh and what would the code be you would type if you were going to ssh into raven?
+ssh is a secure method to connect to a remote server, can transer files and execute commands. 
+ssh Karina-chinook@raven
+What has been the most challenging part of your research project? Are you happy with your organization skills? If not what could be improved?
+For me, finding a good endpoint. I am new to working with BAM files. I feel ok about my organization, I need to improve organzing and ignoring files. 
+For last weeks assignment what did you appreciate the most about knitting documents?
+I find knitting a usfule way to produce readable documents, I was having issues with it last week. 

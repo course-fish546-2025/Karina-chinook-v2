@@ -1,0 +1,53 @@
+---
+title: "04-sr-bam"
+format: html
+editor: visual
+---
+
+## Lets look at some bams on klone
+
+🧬 1. Compare Read Coverage
+
+To check whether there are coverage differences between populations (e.g., genomic regions with higher or lower read depth):
+
+Tools:\
+• samtools depth\
+• bedtools genomecov\
+• mosdepth (faster & easier for summaries)
+
+Basic Steps:
+
+Generate depth file\
+`samtools depth sample1.bam > sample1.depth`
+
+Then average depth across individuals from each population, or use:
+
+`mosdepth -t 4 sample1 sample1.bam`
+
+You can then compare sample1.regions.bed.gz across individuals.
+
+```{bash}
+samtools depth sample1.bam > sample1.depth
+```
+
+⸻
+
+🧬 2. Compare Variants
+
+To see if allele frequencies differ between populations:
+
+Tools:\
+• bcftools mpileup + bcftools call → call variants for all BAMs\
+• vcftools or plink → calculate FST, allele frequencies
+
+Basic Pipeline:
+
+Call variants\
+`bcftools mpileup -Ou -f ref.fa sample1.bam sample2.bam ... | bcftools call -mv -Ov -o all_samples.vcf`
+
+Split VCF by population and calculate allele frequency\
+`vcftools --vcf all_samples.vcf --keep pop1.txt --freq2 --out pop1`\
+`vcftools --vcf all_samples.vcf --keep pop2.txt --freq2 --out pop2`
+
+Calculate FST\
+`vcftools --vcf all_samples.vcf --weir-fst-pop pop1.txt --weir-fst-pop pop2.txt --out pop1_vs_pop2`

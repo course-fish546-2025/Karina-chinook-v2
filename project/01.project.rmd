@@ -1,0 +1,23 @@
+---
+title: "project"
+format: html
+editor: visual
+---
+
+#Working in project 
+#download Central Sound wild type BAM files 
+# 'accept=CSMB17W*.bam' only 
+```{bash}
+wget --recursive --no-parent --no-directories \
+--no-check-certificate \
+--accept=CSMB17W*.bam \
+https://gannet.fish.washington.edu/acropora/OlyRAD_6plates/CSMB17W.v8/
+```
+#download Central Sound hatchery BAM files 
+```{bash}
+wget --recursive --no-parent --no-directories \
+--no-check-certificate \
+--accept=CSMB18H*.bam \
+https://gannet.fish.washington.edu/acropora/OlyRAD_6plates-v2/ 
+```
+
