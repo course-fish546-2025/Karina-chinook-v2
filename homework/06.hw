@@ -1,0 +1,24 @@
+---
+title: "06.hw"
+output: html_document
+date: "2025-05-06"
+---
+
+
+What is Quarto?
+A system in R to create documents and presentations in R markdown formates or R language.  
+
+How do you make columns using Revealjs in Quarto Presentations?
+By using .columns, with class .columns and .width attribute. 
+
+How would you change the appearance of slides using Revealjs in Quarto Presentations?
+You can use built in themes, and theme option to switch between themes. 
+---
+title: "Presentation"
+format:
+  revealjs: 
+    theme: dark
+---
+What has been the biggest constraint working on your own research project in the past week?
+
+Understanding exactly what I need to do and why and the purpose of each step. Also worrying about breaking git
