@@ -1,0 +1,67 @@
+---
+title: "Project"
+output:
+  html_document:
+    df_print: paged
+---
+
+#download Central Sound wild type BAM files # 'accept=CSMB17W*.bam' only
+
+```{bash}
+wget --recursive --no-parent --no-directories \
+--no-check-certificate \
+--accept=CSMB17W*.bam \
+https://gannet.fish.washington.edu/acropora/OlyRAD_6plates/CSMB17W.v8/
+```
+
+#download Central Sound hatchery BAM files
+```{bash}
+wget --recursive --no-parent --no-directories \
+--no-check-certificate \
+--accept=CSMB18H*.bam \
+https://gannet.fish.washington.edu/acropora/OlyRAD_6plates-v2/
+```
+#depth file for hatchery
+```{bash}
+samtools depth \
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.01.bam \
+> /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.depth
+```
+#look at depth
+```{bash}
+head /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.depth
+```
+#call varients for hatchery 
+```{bash}
+for i in {01..05}; do
+  /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.${i}.bam \
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov -o \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputH/H${i}.vcf
+done
+
+```
+
+#call varients for wildtype
+```{bash}
+for i in {01..05}; do
+  /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.${i}.bam \
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov -o \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputW/W${i}.vcf
+done
+
+```
+#Split VCF by population and calculate allele frequency
+```{bash}
+vcftools \
+ /home/shared/8TB_HDD_02/thielkla/Karina-chinook/all_samples.vcf \
+         --keep pop1.txt --freq2 --out /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputw/pop1vcftools
+
+vcftools\
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/all_samples.vcf \
+         --keep pop2.txt --freq2 --out /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputw/pop2
+```
+
