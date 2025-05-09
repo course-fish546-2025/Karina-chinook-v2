@@ -1,0 +1,52 @@
+---
+title: "04.project.rmd"
+format: html
+editor: visual
+---
+#depth file for hatchery
+```{bash}
+
+samtools depth \
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.01.bam \
+> /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.depth
+
+```
+#look at depth
+```{bash}
+head /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.depth
+```
+#call varients for hatchery 
+```{bash}
+for i in {01..05}; do
+  /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.${i}.bam \
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov -o \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputv2/H${i}.vcf
+done
+
+```
+
+#call varients for wildtype
+``` {bash}
+for i in {01..05}; do
+  /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.${i}.bam \
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov -o \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputv2/H${i}.vcf
+done
+```
+
+#Split VCF by population and calculate allele frequency
+```{bash}
+vcftools \
+ /home/shared/8TB_HDD_02/thielkla/Karina-chinook/all_samples.vcf \
+         --keep pop1.txt --freq2 --out /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputv2/pop1vcftools
+
+vcftools\
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/all_samples.vcf \
+         --keep pop2.txt --freq2 --out /home/shared/8TB_HDD_02/thielkla/Karina-chinook/outputv2/pop2
+
+```
+
