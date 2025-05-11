@@ -10,3 +10,6 @@ project/.gitignore
 output/
 data/
 project/**/*.bam
+
+
+bam

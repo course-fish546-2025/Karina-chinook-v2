@@ -1,0 +1,5 @@
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.01.bam
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.02.bam
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.03.bam
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.04.bam
+/home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.05.bam
