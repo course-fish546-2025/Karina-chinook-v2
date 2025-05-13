@@ -1,0 +1,112 @@
+---
+title: "Project"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,         # Display code chunks
+  eval = FALSE,         # Evaluate code chunks
+  warning = FALSE,     # Hide warnings
+  message = FALSE,     # Hide messages
+  fig.width = 6,       # Set plot width in inches
+  fig.height = 4,      # Set plot height in inches
+  fig.align = "center", # Align plots to the center
+  comment = ""         # Prevents appending '##' to beginning of lines in code output
+)
+```
+
+
+# call varients for hatchery 
+```{r, engine='bash'}
+for i in {01..05}; do
+  /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.${i}.bam \
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov \
+  -o output/H${i}.vcf
+done
+
+```
+
+# call varients for wildtype
+```{r, engine='bash'}
+for i in {01..05}; do
+  /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
+  /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.${i}.bam \
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov -o \
+  output/W${i}.vcf
+done
+
+```
+
+# Merge so there can be a comparison 
+
+```{r, engine='bash'}
+for f in output/*.vcf; do
+  /home/shared/htslib-1.14/bgzip "$f"         # compress to .vcf.gz
+  /home/shared/htslib-1.14/tabix -p vcf "$f.gz"  # index for random access
+done
+```
+
+
+```{r, engine='bash'}
+ls output/*.vcf.gz > output/vcflist.txt
+```
+
+
+```{r, engine='bash'}
+/home/shared/bcftools-1.14/bcftools merge \
+-l output/vcflist.txt -Oz -o output/merged.vcf.gz
+
+/home/shared/bcftools-1.14/bcftools index output/merged.vcf.gz
+```
+
+
+```{r, engine='bash', eval=TRUE}
+/home/shared/bcftools-1.14/bcftools query -l output/merged.vcf.gz
+```
+
+# Compare FST
+
+Create text file that list samples  
+
+```{r, engine='bash'}
+/home/shared/vcftools-0.1.16/bin/vcftools --gzvcf output/merged.vcf.gz \
+  --weir-fst-pop hatchery.txt \
+  --weir-fst-pop wild.txt \
+  --out output/hatchery_vs_wild
+```
+
+```{r, engine='bash', eval=TRUE}
+head -20 output/hatchery_vs_wild.weir.fst 
+```
+# 🧠 Interpretation
+	•	A mean FST near zero (or negative) suggests little to no genetic differentiation between the hatchery and wild populations.
+	
+	
+	•	Some negative FST values are possible due to sampling noise or low allele frequency variance; they are usually interpreted as zero.
+	
+	
+	•	A few high FST values (up to 1) indicate loci with strong differentiation — potentially under selection or drift.
+	
+	
+```{r, eval=TRUE}
+# Install if not already installed
+#install.packages("DT")
+
+# Load the package
+library(DT)
+
+# Read your CSV file
+fst_data <- read.csv("output/Top_1__FST_Loci.csv")
+
+# Display interactive table
+datatable(fst_data, options = list(pageLength = 10, scrollX = TRUE), rownames = FALSE)
+```
+	
+	

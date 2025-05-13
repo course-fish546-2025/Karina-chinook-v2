@@ -5,8 +5,10 @@
 uniprot_sprot_r2023_01.fasta
 blastdb/
 assignments/01.blast
-project/.gitignore
 *.bam
 output/
 data/
 project/**/*.bam
+
+
+bam
