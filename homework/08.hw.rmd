@@ -1,0 +1,17 @@
+---
+title: "08.hw"
+output: html_notebook
+---
+
+1.What is a genomic range and what 3 types of information do you need for a range?
+Ways to represent regions of a genome, including the chromosome on which the feature is located, 
+the start position on the chromosome, and the end position.  
+
+What does 0-based and 1-based refer to? What are the advantages and disadvantages of each?
+0-based coordinate system means the first base of the sequence is numbered 0 and in 1-based coordinate system the first base of the sequence is 1. These are two types of coordinate systems in genomics. The advantages for each depends on what you are doing, as the 1-based systems is used for research while the 0-based system is used for computational work. 
+
+What is the value of BEDtools over the bioconductor package GenomicRange?
+BEDtools can manipulate genomic features in many different formats,BED, GFF/GTF, VCF, and BAM 
+
+Describe one subcommand of the BEDtools suite as well as a practical use case.
+The BEDtools sort command sorts a BED file by chromosome and start position. You would need to sort a BED file before running another command, such as merge. 
