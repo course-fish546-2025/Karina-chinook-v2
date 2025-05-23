@@ -1,0 +1,54 @@
+---
+title: "08.assignment.qmd"
+format: html
+editor: visual
+---
+
+```{bash}
+cd /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data 
+curl -O https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/120321-cvBS/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam 
+curl -O https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/120321-cvBS/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam.bai
+```
+```{bash}
+cd /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data 
+curl -O https://eagle.fish.washington.edu/Cvirg_tracks/C_virginica-3.0_Gnomon_genes.bed
+```
+```{bash}
+/home/shared/bedtools2/bin/bedtools bamtobed \
+-i /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data/19F_R1_val_1_bismark_bt2_pe.deduplicated.sorted.bam \
+> /home/shared/8TB_HDD_02/thielkla/Karina-chinook/output/08-19F.bed
+```
+
+```{bash}
+/home/shared/bedtools2/bin/bedtools coverage \
+-a /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data/C_virginica-3.0_Gnomon_genes.bed \
+-b /home/shared/8TB_HDD_02/thielkla/Karina-chinook/output/08-19F.bed \
+> /home/shared/8TB_HDD_02/thielkla/Karina-chinook/08-gene-19F-coverage.out
+```
+
+```{bash}
+cd /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data
+curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_gene.gff curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_rm.te.bed 
+curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_lncRNA.gff
+```
+
+```{bash}
+cd /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data
+curl -O http://owl.fish.washington.edu/halfshell/genomic-databank/cgigas_uk_roslin_v1_rm.te.bed
+```
+
+```{bash}
+/home/shared/bedtools2/bin/bedtools intersect \
+-a /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data/cgigas_uk_roslin_v1_gene.gff \
+-b /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data/cgigas_uk_roslin_v1_rm.te.bed \
+> /home/shared/8TB_HDD_02/thielkla/Karina-chinook/output/08-gene-TE-intersect.out
+
+head -2 /home/shared/8TB_HDD_02/thielkla/Karina-chinook/output/08-gene-TE-intersect.out
+```
+```{bash}
+/home/shared/bedtools2/bin/bedtools closest \
+-a /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data/cgigas_uk_roslin_v1_lncRNA.gff \
+-b /home/shared/8TB_HDD_02/thielkla/Karina-chinook/data/cgigas_uk_roslin_v1_gene.gff \
+> /home/shared/8TB_HDD_02/thielkla/Karina-chinook/output/08-lnc-gene-closet.out
+```
+
