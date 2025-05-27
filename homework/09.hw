@@ -1,0 +1,18 @@
+---
+title: "09.hw.rmd"
+output: html_document
+date: "2025-05-27"
+---
+
+1.What is your goal with respect to your research project to get accomplished this week?
+My goal is to figure out a simple but neat image I could use for my project. 
+2. What is the overall status of your research repo? Is it will organized with a clear Readme file? Are file names and directory clear? Would your classmates be able to understand what the code in your files is designed to do?
+I have all my research repo somewhat neat, I need to make a more clear readme file. I think my file names are clear, for me. I should organize/name things better so it is clear to someone else. 
+3. Go to one of your classmates rpubs link (see issues). What are three things you think are neat? What are two things that are really not that clear to you?
+Neat Things from Hannia's link
+1. Heat map of top 50
+2. That the IDs of the genes will be identified. 
+3. The experimental methods explanation. 
+Two things unclear
+1. What an abundance estimate is for. 
+2. What a DGE is. 
