@@ -1,0 +1,17 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Looking back on the quarter what are two things you were not expecting to learn but did, glad you did, and how would you implement this knowledge beyond this class?
+
+I am glad I learned so much about properly organizing a repository and having a clear readme, I find this will be useful to implement in the future. I am also glad to learn how to use rpub, as that could be implemented in any future projec.t 
+
+Rank the following from 1-5, with 1 being your best friend and 5 being your enemy (raven, rstudio, knitr, bash, github)
+1.rstudio
+2.bash
+3.raven
+4.knitr
+5.github
+
+As part of your research project you must of learned something beyond methods. What is the most important biological finding from your work to to date? Assuming you follow this line of research what is your long term goal of what you expect to learn about biology, ecology, or the environment?
+This project has taught me how to thing about genetic differences between populations, and what could be influencing those difference. I will probably not follow this line of research exactly but thinking about the socio-ecological implications of the seafood industry is something I would like to learn more about. 
