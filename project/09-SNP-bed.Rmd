@@ -45,3 +45,27 @@ bedgraph <- df[, c("chrom", "start", "end", "score")]
 write.table(bedgraph, file = "output/TopSNP.bedgraph", sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
 ```
 
+CLOSEST SNPs and genes
+
+```{bash}
+curl -O https://owl.fish.washington.edu/halfshell/genomic-databank/Olurida_v081-20190709.gene.gff
+```
+
+```{bash}
+sort -k1,1 -k4,4n Olurida_v081-20190709.gene.gff > Olurida_v081-20190709.gene.sorted.gff
+```
+
+```{bash}
+sort -k1,1 -k2,2n output/TopSNP.bedgraph > output/TopSNP.sorted.bedgraph
+```
+
+
+```{bash}
+/home/shared/bedtools2/bin/bedtools closest \
+-a output/TopSNP.sorted.bedgraph \
+-b Olurida_v081-20190709.gene.sorted.gff \
+> output/09-snp-gene-closet.out
+
+head output/09-snp-gene-closet.out
+```
+
