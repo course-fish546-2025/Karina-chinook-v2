@@ -1,0 +1,47 @@
+---
+title: "Project"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,         # Display code chunks
+  eval = FALSE,         # Evaluate code chunks
+  warning = FALSE,     # Hide warnings
+  message = FALSE,     # Hide messages
+  fig.width = 6,       # Set plot width in inches
+  fig.height = 4,      # Set plot height in inches
+  fig.align = "center", # Align plots to the center
+  comment = ""         # Prevents appending '##' to beginning of lines in code output
+)
+```
+
+Make Bedgraph from top SNPS
+
+```{r}
+# Load necessary library
+library(readr)
+
+# Read CSV (assuming your file is called "input.csv")
+df <- read_csv("output/Top_1__FST_Loci.csv", col_types = cols())
+
+# Drop the first column
+df <- df[, -1]
+
+# Rename columns for clarity
+colnames(df) <- c("chrom", "pos", "score")
+
+# Convert to bedGraph format: chrom, start (0-based), end (1-based), score
+df$start <- df$pos - 1
+df$end <- df$start + 1
+
+# Reorder columns
+bedgraph <- df[, c("chrom", "start", "end", "score")]
+
+# Write to tab-separated file with no header
+write.table(bedgraph, file = "output/TopSNP.bedgraph", sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
+```
+
