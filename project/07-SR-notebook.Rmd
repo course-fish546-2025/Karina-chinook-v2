@@ -21,13 +21,14 @@ knitr::opts_chunk$set(
 
 
 # call varients for hatchery 
+
 ```{r, engine='bash'}
 for i in {01..05}; do
   /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
   /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
   /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSBM18H/CSMB18H.${i}.bam \
   | /home/shared/bcftools-1.14/bcftools call -mv -Ov \
-  -o output/H${i}.vcf
+  -o ~/Karina-chinook/output/H${i}.vcf
 done
 
 ```
@@ -38,8 +39,8 @@ for i in {01..05}; do
   /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
   /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Olurida_v081.fa \
   /home/shared/8TB_HDD_02/thielkla/Karina-chinook/CSMB17W/CSMB17W.${i}.bam \
-  | /home/shared/bcftools-1.14/bcftools call -mv -Ov -o \
-  output/W${i}.vcf
+  | /home/shared/bcftools-1.14/bcftools call -mv -Ov \
+  -o ~/Karina-chinook/output/W${i}.vcf
 done
 
 ```
@@ -47,7 +48,7 @@ done
 # Merge so there can be a comparison 
 
 ```{r, engine='bash'}
-for f in output/*.vcf; do
+for f in ~/Karina-chinook/output/*.vcf; do
   /home/shared/htslib-1.14/bgzip "$f"         # compress to .vcf.gz
   /home/shared/htslib-1.14/tabix -p vcf "$f.gz"  # index for random access
 done
@@ -55,20 +56,20 @@ done
 
 
 ```{r, engine='bash'}
-ls output/*.vcf.gz > output/vcflist.txt
+ls ~/Karina-chinook/output/*.vcf.gz > ~/Karina-chinook/output/vcflist.txt
 ```
 
 
 ```{r, engine='bash'}
 /home/shared/bcftools-1.14/bcftools merge \
--l output/vcflist.txt -Oz -o output/merged.vcf.gz
+-l ~/Karina-chinook/output/vcflist.txt -Oz -o ~/Karina-chinook/output/merged.vcf.gz
 
-/home/shared/bcftools-1.14/bcftools index output/merged.vcf.gz
+/home/shared/bcftools-1.14/bcftools index ~/Karina-chinook/output/merged.vcf.gz
 ```
 
 
 ```{r, engine='bash', eval=TRUE}
-/home/shared/bcftools-1.14/bcftools query -l output/merged.vcf.gz
+/home/shared/bcftools-1.14/bcftools query -l ~/Karina-chinook/output/merged.vcf.gz
 ```
 
 # Compare FST
@@ -76,14 +77,14 @@ ls output/*.vcf.gz > output/vcflist.txt
 Create text file that list samples  
 
 ```{r, engine='bash'}
-/home/shared/vcftools-0.1.16/bin/vcftools --gzvcf output/merged.vcf.gz \
+/home/shared/vcftools-0.1.16/bin/vcftools --gzvcf ~/Karina-chinook/output/merged.vcf.gz \
   --weir-fst-pop hatchery.txt \
   --weir-fst-pop wild.txt \
-  --out output/hatchery_vs_wild
+  --out ~/Karina-chinook/output/hatchery_vs_wild
 ```
 
 ```{r, engine='bash', eval=TRUE}
-head -20 output/hatchery_vs_wild.weir.fst 
+head -20 ~/Karina-chinook/output/hatchery_vs_wild.weir.fst 
 ```
 # 🧠 Interpretation
 	•	A mean FST near zero (or negative) suggests little to no genetic differentiation between the hatchery and wild populations.
@@ -95,18 +96,20 @@ head -20 output/hatchery_vs_wild.weir.fst
 	•	A few high FST values (up to 1) indicate loci with strong differentiation — potentially under selection or drift.
 	
 	
-```{r, eval=TRUE}
+
+```{r, eval=FALSE}
 # Install if not already installed
 #install.packages("DT")
 
 # Load the package
 library(DT)
 
-# Read your CSV file
-fst_data <- read.csv("output/Top_1__FST_Loci.csv")
+# Read the tab-delimited FST data
+hatchery_vs_wild.weir.fst <- read.table("/home/shared/8TB_HDD_02/thielkla/Karina-chinook/output/hatchery_vs_wild.weir.fst", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
 
 # Display interactive table
-datatable(fst_data, options = list(pageLength = 10, scrollX = TRUE), rownames = FALSE)
+datatable(hatchery_vs_wild.weir.fst, options = list(pageLength = 10, scrollX = TRUE), rownames = FALSE)
 ```
-	
+
 	
