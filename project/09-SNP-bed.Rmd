@@ -26,7 +26,7 @@ Make Bedgraph from top SNPS
 library(readr)
 
 # Read CSV (assuming your file is called "input.csv")
-df <- read_csv("output/Top_1__FST_Loci.csv", col_types = cols())
+df <- read_csv("/home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/Top_1__FST_Loci.csv", col_types = cols())
 
 # Drop the first column
 df <- df[, -1]
@@ -42,6 +42,6 @@ df$end <- df$start + 1
 bedgraph <- df[, c("chrom", "start", "end", "score")]
 
 # Write to tab-separated file with no header
-write.table(bedgraph, file = "output/TopSNP.bedgraph", sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
+write.table(bedgraph, file = "/home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/TopSNP.bedgraph", sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
 ```
 
