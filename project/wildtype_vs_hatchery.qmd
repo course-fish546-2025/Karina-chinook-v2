@@ -21,7 +21,8 @@ knitr::opts_chunk$set(
 )
 
 ```
-## call varients for hatchery 
+
+## call varients for hatchery
 
 ```{r, engine='bash'}
 for i in {01..05}; do
@@ -33,8 +34,8 @@ for i in {01..05}; do
 done
 
 ```
-## call varients for wildtype
 
+## call varients for wildtype
 
 ```{r, engine='bash'}
 for i in {01..05}; do
@@ -45,7 +46,8 @@ for i in {01..05}; do
   -o ~/Karina-chinook/output/W${i}.vcf
 done
 ```
-## Merge so there can be a comparison 
+
+## Merge so there can be a comparison
 
 ```{r, engine='bash'}
 for f in ~/Karina-chinook/output/*.vcf; do
@@ -54,11 +56,16 @@ for f in ~/Karina-chinook/output/*.vcf; do
 done
 ```
 
-
 ```{r, engine='bash'}
 ls ~/Karina-chinook/output/*.vcf.gz > ~/Karina-chinook/output/vcflist.txt
 ```
 
+```{r, engine='bash'}
+/home/shared/bcftools-1.14/bcftools merge \
+-l ~/Karina-chinook/output/vcflist.txt -Oz -o ~/Karina-chinook/output/merged.vcf.gz
+
+/home/shared/bcftools-1.14/bcftools index ~/Karina-chinook/output/merged.vcf.gz
+```
 
 ```{r, engine='bash'}
 /home/shared/bcftools-1.14/bcftools merge \
@@ -67,16 +74,7 @@ ls ~/Karina-chinook/output/*.vcf.gz > ~/Karina-chinook/output/vcflist.txt
 /home/shared/bcftools-1.14/bcftools index ~/Karina-chinook/output/merged.vcf.gz
 ```
 
-
-```{r, engine='bash'}
-/home/shared/bcftools-1.14/bcftools merge \
--l ~/Karina-chinook/output/vcflist.txt -Oz -o ~/Karina-chinook/output/merged.vcf.gz
-
-/home/shared/bcftools-1.14/bcftools index ~/Karina-chinook/output/merged.vcf.gz
-```
-
-##Compare FST
-#Create text file that list samples  
+##Compare FST #Create text file that list samples
 
 ```{r, engine='bash'}
 /home/shared/vcftools-0.1.16/bin/vcftools --gzvcf ~/Karina-chinook/output/merged.vcf.gz \
@@ -85,20 +83,22 @@ ls ~/Karina-chinook/output/*.vcf.gz > ~/Karina-chinook/output/vcflist.txt
   --out ~/Karina-chinook/output/hatchery_vs_wild
 ```
 
-
 ```{r, engine='bash', eval=TRUE}
 head -20 ~/Karina-chinook/output/hatchery_vs_wild.weir.fst 
 ```
 
 ## 🧠 Interpretation
-	•	A mean FST near zero (or negative) suggests little to no genetic differentiation between the hatchery and wild populations.
-	
-	
-	•	Some negative FST values are possible due to sampling noise or low allele frequency variance; they are usually interpreted as zero.
-	
-	
-	•	A few high FST values (up to 1) indicate loci with strong differentiation — potentially under selection or drift.
-	
+
+```         
+•   A mean FST near zero (or negative) suggests little to no genetic differentiation between the hatchery and wild populations.
+
+
+•   Some negative FST values are possible due to sampling noise or low allele frequency variance; they are usually interpreted as zero.
+
+
+•   A few high FST values (up to 1) indicate loci with strong differentiation — potentially under selection or drift.
+```
+
 ```{r, eval=FALSE}
 # Install if not already installed
 #install.packages("DT")
@@ -113,4 +113,3 @@ hatchery_vs_wild.weir.fst <- read.table("/home/shared/8TB_HDD_02/thielkla/Karina
 # Display interactive table
 datatable(hatchery_vs_wild.weir.fst, options = list(pageLength = 10, scrollX = TRUE), rownames = FALSE)
 ```
-	
