@@ -1,24 +1,26 @@
 ---
-title: "Final Project"
+title: " O.Lurida Wildtype vs. Hatchery"
 author: "Karina"
-output: HTML
+output: html_document
 date: "2025-06-04"
 ---
 
-## Project: O.Lurida Wildtype vs. Hatchery 
+#Project:Wildtype vs. Hatchery O.Lurida genetic comparison 
+
 ![Olympia oyster](/home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/128px-Ostrea_Lurida.jpg)
-- The goal of this project is to see if there are genetic differences between olympia oysters from a hatchery group and a wild type group. 
--This could be useful for understanding if hatchery bred oyster can be used to restore wild type populations
--Data was originally collected by PSRF
-##Workflow
--I received the data as BAM files and uploaded into Rstudio wild type samples
+
+The goal of this project is to see if there are genetic differences between olympia oysters from a hatchery group and a wild type group. 
+This could be useful for understanding if hatchery bred oyster can be used to restore wild type populations
+Data was originally collected by PSRF
+#Workflow
+I received the data as BAM files and uploaded into Rstudio wild type samples
 ```{bash, eval=FALSE}
 wget --recursive --no-parent --no-directories \
 --no-check-certificate \
 --accept=CSMB17W*.bam \
 https://gannet.fish.washington.edu/acropora/OlyRAD_6plates/CSMB17W.v8/
 ```
--and for hatchery samples
+and for hatchery samples
 ```{bash, eval=FALSE}
 wget --recursive --no-parent --no-directories \
 --no-check-certificate \
@@ -26,8 +28,8 @@ wget --recursive --no-parent --no-directories \
 https://gannet.fish.washington.edu/acropora/OlyRAD_6plates-v2/ 
 ```
 
-##Merged two groups to make comparison
--Call variants for hatchery
+#Merged two groups to make comparison
+Call variants for hatchery
 ```{r, engine='bash', eval=FALSE}
 for i in {01..05}; do
   /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
@@ -38,7 +40,7 @@ for i in {01..05}; do
 done
  
 ```
--Call variants for wild type
+Call variants for wild type
 ```{r, engine='bash', eval=FALSE}
 for i in {01..05}; do
   /home/shared/bcftools-1.14/bcftools mpileup -Ou -f \
@@ -48,7 +50,7 @@ for i in {01..05}; do
   -o ~/Karina-chinook/output/W${i}.vcf
 done
 ```
--Merged for comparison
+Merged  wild type and hatchery for comparison
 
 ```{r, engine='bash', eval=FALSE}
 for f in ~/Karina-chinook/output/*.vcf; do
@@ -74,22 +76,22 @@ ls ~/Karina-chinook/output/*.vcf.gz > ~/Karina-chinook/output/vcflist.txt
 
 /home/shared/bcftools-1.14/bcftools index ~/Karina-chinook/output/merged.vcf.gz
 ```
-##Compare FST 
--Create text file that list samples
+#Compare FST 
+Create text file that list samples
 ```{r, engine='bash', eval=FALSE}
 /home/shared/vcftools-0.1.16/bin/vcftools --gzvcf ~/Karina-chinook/output/merged.vcf.gz \
   --weir-fst-pop hatchery.txt \
   --weir-fst-pop wild.txt \
   --out ~/Karina-chinook/output/hatchery_vs_wild
 ```
-##Compare FST
--To measure the degree of genetic differentiation between populations
+#Compare FST
+To measure the degree of genetic differentiation between populations
 ```{r, engine='bash', eval=FALSE}
 head -20 ~/Karina-chinook/output/hatchery_vs_wild.weir.fst 
 ```
-##Table
--Create a data frame called hatchery_vs_wild.weir.fst
--Make table from fst data
+#Table
+Create a data frame called hatchery_vs_wild.weir.fst
+Make table from fst data
 ```{r, eval=TRUE}
 # Install if not already installed
 #install.packages("DT")
@@ -105,8 +107,8 @@ hatchery_vs_wild.weir.fst <- read.csv("https://gannet.fish.washington.edu/seashe
 # Display interactive table
 datatable(hatchery_vs_wild.weir.fst, options = list(pageLength = 10, scrollX = TRUE), rownames = FALSE)
 ```
-##Make Bedgraph from top SNPS
--Top genetic variations between groups
+#Make Bedgraph from top SNPS
+Top genetic variations between groups
 ```{r, eval = FALSE}
 
 # Load necessary library
@@ -131,21 +133,21 @@ bedgraph <- df[, c("chrom", "start", "end", "score")]
 # Write to tab-separated file with no header
 write.table(bedgraph, file = "/home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/TopSNP.bedgraph", sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
 ```
-##CLOSEST SNPs and genes
-- Identify genes that are physically closest to a set of SNPs using a gene annotation file and a list of top SNPs
+#Closest SNPs and genes
+Identify genes that are physically closest to a set of SNPs using a gene annotation file and a list of top SNPs
 ```{bash, eval=FALSE}
 curl -O https://owl.fish.washington.edu/halfshell/genomic-databank/Olurida_v081-20190709.gene.gff
 ```
--Sorts the GFF file by chromosome (column 1) and by start position (column 4).
+Sorts the GFF file by chromosome (column 1) and by start position (column 4).
 ```{bash,eval=FALSE}
 sort -k1,1 -k4,4n Olurida_v081-20190709.gene.gff > Olurida_v081-20190709.gene.sorted.gff
 ```
-- Sort the SNP file
+Sort the SNP file
 ```{bash,eval=FALSE}
 sort -k1,1 -k2,2n /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/TopSNP.bedgraph > /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/TopSNP.sorted.bedgraph
 ```
-##Find closest gene to each SNP
--Each line in the output corresponds to a SNP, followed by the closest gene's information
+#Find closest gene to each SNP
+Each line in the output corresponds to a SNP, followed by the closest gene's information
 
 ```{bash,eval=TRUE}
 /home/shared/bedtools2/bin/bedtools closest \
@@ -155,7 +157,7 @@ sort -k1,1 -k2,2n /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook
 
 head /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/09-snp-gene-closet.out
 ```
-##Table of closet genes and function
+#Table of closest genes and function
 ```{bash,eval=TRUE}
 grep -oP 'Note=Similar to \K[^(;)]+' /home/shared/8TB_HDD_02/thielkla/Karina-chinook/Karina-chinook-v2/project/09-snp-gene-closet.out | sort | uniq
 ```
